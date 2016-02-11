@@ -1,0 +1,189 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/scrollView" >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:orientation="vertical"
+        android:descendantFocusability="beforeDescendants"
+        android:focusableInTouchMode="true" >
+
+        <TextView
+            android:text="@string/profile_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/profile_text"
+            android:paddingBottom="15dp" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp" >
+
+            <Space
+                android:layout_width="70dp"
+                android:layout_height="fill_parent" />
+
+            <ImageView
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:id="@+id/profile_image"
+                android:src="@drawable/profile_default" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp" >
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:text="@string/change_button"
+                    android:onClick="changeClick"
+                    android:id="@+id/change_button" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:text="@string/name_prompt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/name_prompt"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp" />
+
+        <EditText
+            android:id="@+id/name_input"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/name_input"
+            android:inputType="text" />
+
+        <TextView
+            android:text="@string/email_propt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/email_prompt"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp" />
+
+        <EditText
+            android:id="@+id/email_input"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/email_input"
+            android:inputType="textEmailAddress" />
+
+        <TextView
+            android:text="@string/phone_prompt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/phone_prompt"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp" />
+
+        <EditText
+            android:id="@+id/phone_input"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/phone_input"
+            android:inputType="phone" />
+
+        <TextView
+            android:text="@string/gender_prompt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/gender_prompt"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp" />
+
+        <RadioGroup
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/gender_input" >
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/male_button"
+                android:layout_weight="1"
+                android:id="@+id/male_button" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/female_button"
+                android:layout_weight="1"
+                android:id="@+id/female_button" />
+
+        </RadioGroup>
+
+        <TextView
+            android:text="@string/class_prompt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/class_prompt"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp" />
+
+        <EditText
+            android:id="@+id/class_input"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/class_input"
+            android:inputType="number" />
+
+        <TextView
+            android:text="@string/major_prompt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/major_prompt"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp" />
+
+        <EditText
+            android:id="@+id/major_input"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/major_input"
+            android:inputType="text" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/save_button"
+                android:id="@+id/save_button"
+                android:onClick="onSaveClicked" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/cancel_button"
+                android:id="@+id/cancel_button"
+                android:onClick="onCancelClicked" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
+<!-- From: file:/Users/Nick/Documents/Dartmouth/CS65/Lab5/app/src/main/res/layout/profile_layout.xml -->

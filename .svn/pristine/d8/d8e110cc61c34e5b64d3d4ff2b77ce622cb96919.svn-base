@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="50dp"
+    android:paddingBottom="50dp">
+
+    <Button
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:text="@string/save_button"
+        android:onClick="saveExercise"
+        android:id="@+id/manual_save_button"/>
+
+    <Button
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:onClick="cancelExercise"
+        android:text="@string/cancel_button"
+        android:id="@+id/manual_cancel_button"/>
+
+</LinearLayout><!-- From: file:/Users/Nick/Documents/Dartmouth/CS65/Lab5/app/src/main/res/layout/activity_input_buttons.xml -->

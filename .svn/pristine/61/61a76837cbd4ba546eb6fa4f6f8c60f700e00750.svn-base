@@ -1,0 +1,18 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="edu.dartmouth.cs.myruns.SettingsFragment"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <ListView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@android:id/list">
+
+    </ListView>
+
+</LinearLayout>
+<!-- From: file:/Users/Nick/Documents/Dartmouth/CS65/Lab5/app/src/main/res/layout/activity_manual_input.xml -->

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="edu.dartmouth.cs.myruns.DisplayEntryActivity">
+
+    <item android:id="@+id/delete_button"
+        android:title="@string/delete_button"
+        android:showAsAction="always"/>
+
+</menu><!-- From: file:/Users/Nick/Documents/Dartmouth/CS65/Lab5/app/src/main/res/menu/entry_delete_menu.xml -->

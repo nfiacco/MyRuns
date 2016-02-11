@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory
+        android:title="@string/profile_settings" >
+
+        <PreferenceScreen
+            android:title="@string/profile_setting_preferences"
+            android:summary="@string/summary_profile_settings" >
+
+            <intent android:action="android.intent.action.VIEW"
+                android:targetPackage="edu.dartmouth.cs.myruns"
+                android:targetClass="edu.dartmouth.cs.myruns.ProfileActivity" />
+
+        </PreferenceScreen>
+
+        <CheckBoxPreference
+            android:key="privacy_checkbox"
+            android:title="@string/privacy_setting"
+            android:summary="@string/privacy_details" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/additional_settings" >
+
+        <PreferenceScreen
+            android:title="@string/unit_settings"
+            android:summary="@string/summary_unit_settings"
+            android:key="@string/unit_key" >
+
+        </PreferenceScreen>
+
+        <PreferenceScreen
+            android:title="@string/comment_settings"
+            android:summary="@string/summary_comment_settings"
+            android:key="@string/comment_key" >
+
+        </PreferenceScreen>
+
+    </PreferenceCategory>
+
+
+    <PreferenceCategory
+        android:title="@string/misc" >
+
+        <PreferenceScreen
+            android:title="@string/class_homepage"
+            android:summary="@string/homepage_url">
+
+            <intent android:action="android.intent.action.VIEW"
+                android:data="http://www.cs.dartmouth.edu/~campbell" />
+
+        </PreferenceScreen>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>         <!-- From: file:/Users/Nick/Documents/Dartmouth/CS65/Lab5/app/src/main/res/xml/preferences.xml -->

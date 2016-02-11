@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="edu.dartmouth.cs.myruns" >
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyCLTK6JSwOoWuR_oX-j1Nm0qHMqCZ8kAuI" />
+
+        <activity
+            android:name="edu.dartmouth.cs.myruns.MainActivity"
+            android:label="@string/main_activity_label"
+            android:launchMode="singleTop" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="edu.dartmouth.cs.myruns.ProfileActivity"
+            android:label="@string/profile_activity_label"
+            android:parentActivityName="edu.dartmouth.cs.myruns.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.dartmouth.cs.myruns.MainActivity" />
+        </activity>
+        <activity
+            android:name="edu.dartmouth.cs.myruns.ManualInputActivity"
+            android:label="@string/title_activity_manual_input"
+            android:parentActivityName="edu.dartmouth.cs.myruns.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.dartmouth.cs.myruns.MainActivity" />
+        </activity>
+        <activity
+            android:name="edu.dartmouth.cs.myruns.MapActivity"
+            android:label="@string/title_activity_map"
+            android:launchMode="singleTop" >
+        </activity>
+        <activity
+            android:name="edu.dartmouth.cs.myruns.DisplayEntryActivity"
+            android:label="@string/title_activity_display_entry"
+            android:parentActivityName="edu.dartmouth.cs.myruns.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.dartmouth.cs.myruns.MainActivity" />
+        </activity>
+
+        <service android:name="edu.dartmouth.cs.myruns.TrackingService" />
+
+        <activity
+            android:name="edu.dartmouth.cs.myruns.MapDisplayEntry"
+            android:label="@string/title_activity_map_display_entry"
+            android:parentActivityName="edu.dartmouth.cs.myruns.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.dartmouth.cs.myruns.MainActivity" />
+        </activity>
+
+        <receiver
+            android:name="edu.dartmouth.cs.myruns.GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="com.example.gcm" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name="edu.dartmouth.cs.myruns.GCMIntentService" />
+
+    </application>
+
+</manifest>

@@ -1,0 +1,377 @@
+package edu.dartmouth.cs.myruns;
+
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.Service;
+import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.location.Location;
+import android.os.AsyncTask;
+import android.os.Binder;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
+import android.util.Log;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
+import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationListener;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.concurrent.ArrayBlockingQueue;
+
+/**
+ * Created by Nick on 2/8/15.
+ */
+public class TrackingService extends Service implements
+        ConnectionCallbacks, OnConnectionFailedListener, SensorEventListener {
+
+    private static final String TAG = "TrackingService";
+
+    private static final String INPUT_KEY = "input_key";
+    private static final String ACTIVITY_KEY = "activity_key";
+
+    private NotificationManager mNotificationManager;
+    protected GoogleApiClient mGoogleApiClient;
+
+    private IBinder binder;
+
+    public static final int MSG_REGISTER_CLIENT = 0;
+    public static final int MSG_BEGIN_TRACKING = 1;
+    public static final int MSG_SEND_PATH = 2;
+    public static final int MSG_STOP_TRACKING = 3;
+
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
+    private ActivityClassificationTask mAsyncTask;
+    private static ArrayBlockingQueue<Double> mAccBuffer;
+
+    private final Messenger mMessenger = new Messenger(new IncomingMessageHandler());
+    private Messenger mClient;
+    private boolean trackingStarted = false;
+    private boolean notifyOn = false;
+    private boolean sensingOn = false;
+
+    private int inputType;
+    private String activityType;
+
+    private ExerciseEntry mEntry;
+
+    public TrackingService(){
+
+    }
+
+    private final LocationListener locationListener = new LocationListener() {
+        public void onLocationChanged(Location location) {
+            //Log.d(TAG, "new location");
+            if (trackingStarted){
+                mEntry.insertLocation(location);
+                sendMessageToUI();
+            }
+        }
+    };
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        mAccBuffer = new ArrayBlockingQueue<Double>(2048);
+        this.binder = new TrackingBinder();
+        buildGoogleApiClient();
+        mGoogleApiClient.connect();
+
+        mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
+        mSensorManager.registerListener(this, mAccelerometer,
+                SensorManager.SENSOR_DELAY_FASTEST);
+    }
+
+    protected synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        return START_STICKY; // Run until explicitly stopped.
+    }
+
+    public IBinder getMessenger(){
+        return mMessenger.getBinder();
+    }
+
+    /**
+     * Display a notification in the notification bar.
+     */
+    private void showNotification() {
+
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+                new Intent(this, MapActivity.class), 0);
+        Notification notification = new Notification.Builder(this)
+                .setContentTitle(this.getString(R.string.service_label))
+                .setContentText(
+                        getResources().getString(R.string.service_started))
+                .setSmallIcon(R.drawable.notify)
+                .addAction(R.drawable.ic_accept, "Accept", pausePendingIntent)  // #1
+                .addAction(R.drawable.ic_decline, "Decline", nextPendingIntent)
+                .setContentIntent(contentIntent).build();
+        mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notification.flags = notification.flags
+                | Notification.FLAG_ONGOING_EVENT
+                | Notification.FLAG_AUTO_CANCEL;
+
+        mNotificationManager.notify(0, notification);
+    }
+
+    // start the location updates.
+    public void startLocationUpdates() {
+        showNotification();
+        notifyOn = true;
+        mEntry = new ExerciseEntry();
+        if (inputType == 2){
+            mEntry.setCurrentActivity("N/A");
+        }
+        else{
+            mEntry.setActivityType(activityType);
+            mEntry.setCurrentActivity(activityType);
+        }
+        mEntry.setInputType(inputType);
+        mEntry.setDateTime(Calendar.getInstance());
+
+        sendMessageToUI();
+        trackingStarted = true;
+    }
+
+    public void startSensing() {
+        mAsyncTask = new ActivityClassificationTask();
+        mAsyncTask.execute();
+
+        sensingOn = true;
+    }
+
+    public void stopLocationUpdates(){
+        mNotificationManager.cancelAll();
+        notifyOn = false;
+        trackingStarted = false;
+
+        if (sensingOn){
+            mAsyncTask.cancel(true);
+        }
+
+        sensingOn = false;
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return this.binder;
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.d(TAG, "S:onDestroy():Service Stopped");
+        if (notifyOn) {
+            mNotificationManager.cancelAll(); // Cancel the persistent notification.
+        }
+        mGoogleApiClient.disconnect();
+
+        if (sensingOn) {
+            mAsyncTask.cancel(true);
+        }
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        mSensorManager.unregisterListener(this);
+
+        super.onDestroy();
+    }
+
+    private void sendMessageToUI() {
+        try {
+            // Send data as a String
+            Message msg = Message.obtain(null, MSG_SEND_PATH);
+            mClient.send(msg);
+        }
+
+        catch (RemoteException e) {
+        }
+    }
+
+    @Override
+    public void onConnected(Bundle connectionHint) {
+        LocationRequest locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(1000L);
+
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, locationRequest, locationListener);
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult result) {
+        Log.i(TAG, "Connection failed: ConnectionResult.getErrorCode() = " + result.getErrorCode());
+    }
+
+
+    @Override
+    public void onConnectionSuspended(int cause) {
+        Log.i(TAG, "Connection suspended");
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (sensingOn) {
+            if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
+
+                double m = Math.sqrt(event.values[0] * event.values[0]
+                        + event.values[1] * event.values[1] + event.values[2]
+                        * event.values[2]);
+
+                // insert into que
+                try {
+                    mAccBuffer.add(new Double(m));
+                }
+                catch (IllegalStateException e) {
+                    // double size of queue to accomodate new updates
+                    ArrayBlockingQueue<Double> newBuf = new ArrayBlockingQueue<Double>(
+                            mAccBuffer.size() * 2);
+
+                    mAccBuffer.drainTo(newBuf);
+                    mAccBuffer = newBuf;
+                    mAccBuffer.add(new Double(m));
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+    }
+
+    /**
+     * Handle incoming messages from MainActivity
+     */
+    private class IncomingMessageHandler extends Handler { // Handler of
+        // incoming messages
+        // from clients.
+        @Override
+        public void handleMessage(Message msg) {
+            Log.d(TAG, "S:handleMessage: " + msg.what);
+            switch (msg.what) {
+                case MSG_REGISTER_CLIENT:
+                    mClient = msg.replyTo;
+                    break;
+                case MSG_BEGIN_TRACKING:
+                    inputType = msg.getData().getInt(INPUT_KEY);
+                    activityType = msg.getData().getString(ACTIVITY_KEY);
+                    startLocationUpdates();
+                    if (inputType == 2){
+                        startSensing();
+                    }
+                    break;
+                case MSG_STOP_TRACKING:
+                    stopLocationUpdates();
+                    break;
+                default:
+                    super.handleMessage(msg);
+            }
+        }
+    }
+
+    private class ActivityClassificationTask extends AsyncTask<Void, Void, Void>{
+
+        private final String[] ACTIVITY_LIST = {"Standing", "Walking", "Running", "Sitting", "Hiking", "Biking", "Swimming", "Alpine Skiing", "XC Skiing", "Skating", "Elliptical","Other"};
+
+        protected Void doInBackground(Void[] paramArrayOfVoid)
+        {
+            int i = 0;
+
+            FFT localFFT = new FFT(64);
+            double[] re = new double[64];
+            double[] im = new double[64];
+            ArrayList<Double> localArrayList = new ArrayList<Double>();
+
+            while (!isCancelled()) {
+
+                try {
+
+                    // get the value from the queue
+                    re[i++] = TrackingService.mAccBuffer.take();
+                    int activity_value = -1;
+
+                    // when the block is full, begin classification
+                    if (i == 64) {
+                        i = 0;
+                        double max = 0.0;
+
+                        // calculate the max value
+                        for (double curValue : re){
+                            if (curValue > max) {
+                                max = curValue;
+                            }
+                        }
+
+                        // perform fast fourier transform on accelerometer data
+                        localFFT.fft(re, im);
+
+                        int n = 0;
+                        while (n < re.length) {
+                            // add the magnitude of each reading
+                            localArrayList.add(Math.sqrt(re[n] * re[n] + im[n] * im[n]));
+
+                            // clear the arrays
+                            re[n] = 0.0D; // unnecessary, but added for safety
+                            im[n] = 0.0D;
+                            n++;
+                        }
+
+                        localArrayList.add(Double.valueOf(max));
+                        activity_value = (int) WekaClassifier.classify(localArrayList.toArray());
+
+                        TrackingService.this.mEntry.setCurrentActivity(ACTIVITY_LIST[activity_value]);
+                        TrackingService.this.mEntry.updateActivityWeighted(activity_value);
+                        TrackingService.this.sendMessageToUI();
+                        localArrayList.clear();
+                    }
+                }
+
+                catch (Exception localException) {
+                    localException.printStackTrace();
+                }
+            }
+
+            return null;
+
+        }
+    }
+
+    public class TrackingBinder extends Binder
+    {
+        public TrackingBinder(){
+        }
+
+        public ExerciseEntry getExerciseEntry(){
+            return TrackingService.this.mEntry;
+        }
+
+        TrackingService getService(){
+            return TrackingService.this;
+        }
+    }
+
+}

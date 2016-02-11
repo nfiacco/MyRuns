@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MyRuns</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="profile_photo">Profile Photo:</string>
+    <string name="name_input">Your Name</string>
+    <string name="name_prompt">Name:</string>
+    <string name="email_propt">Email:</string>
+    <string name="email_input">Your Email</string>
+    <string name="phone_input">Your phone</string>
+    <string name="phone_prompt">Phone:</string>
+    <string name="gender_prompt">Gender:</string>
+    <string name="male_button">Male</string>
+    <string name="female_button">Female</string>
+    <string name="class_prompt">Class:</string>
+    <string name="class_input">e.g., 2017</string>
+    <string name="major_input">Your major</string>
+    <string name="major_prompt">Major:</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="save_button">Save</string>
+    <string name="change_button">Change</string>
+    <string name="preference_name">my_shared_preferences</string>
+    <string name="preference_key_profile_email">email_key</string>
+    <string name="preference_key_profile_name">name_key</string>
+    <string name="preference_key_profile_gender">gender_key</string>
+    <string name="preference_key_profile_class">class_key</string>
+    <string name="preference_key_profile_major">major_key</string>
+    <string name="preference_key_profile_phone">phone_key</string>
+    <string name="saved_message">User information saved</string>
+    <string name="cancel_message">Cancelled!</string>
+    <string name="preference_key_profile_uri">uri_key</string>
+    <string name="dialogTitle">Select Profile Image</string>
+    <string name="main_activity_label">MyRuns</string>
+    <string name="profile_activity_label">Preferences</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="account_prefs">Account Preferences</string>
+    <string name="input_prompt">Input Type:</string>
+    <string name="start_button">Start</string>
+    <string name="sync_button">Sync</string>
+
+    <string-array name="input_type_entries">
+        <item>Manual Entry</item>
+        <item>GPS</item>
+        <item>Automatic Mode</item>
+    </string-array>
+    <string-array name="activity_type_entries">
+        <item>Running</item>
+        <item>Walking</item>
+        <item>Standing</item>
+        <item>Sitting</item>
+        <item>Walking</item>
+        <item>Hiking</item>
+        <item>Biking</item>
+        <item>Swimming</item>
+        <item>Alpine Skiing</item>
+        <item>XC Skiing</item>
+        <item>Skating</item>
+        <item>Elliptical</item>
+        <item>Other</item>
+    </string-array>
+
+    <string name="title_activity_manual_input">MyRuns</string>
+    <string name="title_activity_map">Map</string>
+    <string name="profile_settings">Account Preferences</string>
+    <string name="profile_setting_preferences">User Profile</string>
+    <string name="summary_profile_settings">Names, Email, Class, etc.</string>
+    <string name="ok_button">Ok</string>
+    <string name="comment_hint">How did it go? Enter notes here</string>
+    <string name="privacy_details">Posting your records anonymously</string>
+    <string name="privacy_setting">Privacy Setting</string>
+    <string name="additional_settings">Additional Settings</string>
+    <string name="unit_settings">Unit Preference</string>
+    <string name="summary_unit_settings">Select the units in which you would like to see your exercise distance</string>
+    <string name="comment_settings">Comments</string>
+    <string name="summary_comment_settings">Any suggestions for the course?</string>
+    <string name="unit_key">unit_key</string>
+    <string name="comment_key">comment_key</string>
+    <string name="metric">Metric (kilometers)</string>
+    <string name="american">Imperial (miles)</string>
+    <string name="misc">Misc.</string>
+    <string name="homepage_url">http://www.cs.dartmouth.edu/~campbell</string>
+    <string name="class_homepage">Class Homepage</string>
+    <string name="title_activity_display_entry">DisplayEntryActivity</string>
+    <string name="activity_title">Activity Type</string>
+    <string name="date_title">Date and Time</string>
+    <string name="duration_title">Duration</string>
+    <string name="distance_title">Distance</string>
+    <string name="delete_button">Delete</string>
+    <string name="service_started">Tracking your path now</string>
+    <string name="service_label">MyRuns</string>
+    <string name="title_activity_map_display_entry">MapDisplayEntry</string>
+    <string name="server_addr">http://1-dot-myrunsfiacco.appspot.com</string>
+
+
+</resources>

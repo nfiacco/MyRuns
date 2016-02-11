@@ -1,0 +1,52 @@
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+    <fragment
+        class="com.google.android.gms.maps.MapFragment"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:id="@+id/map"
+        tools:layout="@android:layout/simple_gallery_item">
+    </fragment>
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:padding="10dp"
+        android:gravity="top|left"
+        >
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/data_text"
+            android:textColor="#000000"
+            android:textSize="16dp"
+            android:text="" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:padding="10dp"
+        android:layout_gravity="center_horizontal|bottom" >
+
+        <Button
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:id="@+id/btnSave"
+            android:onClick="saveExercise"
+            android:text="@string/save_button"/>
+
+        <Button
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:id="@+id/btnCancel"
+            android:onClick="cancelExercise"
+            android:text="@string/cancel_button" />
+    </LinearLayout>
+
+</FrameLayout><!-- From: file:/Users/Nick/Documents/Dartmouth/CS65/Lab5/app/src/main/res/layout/activity_map.xml -->
