@@ -1,5 +1,5 @@
 # MyRuns
-Android application to track exercise activity and publish to cloud server
+Android application to track exercise activity and publishes data to cloud server
 
 Uses action tabs to display three separate fragments: Start, History, and Settings.
   Start- allows user input of activities or automatic gps recording.
