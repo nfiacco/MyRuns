@@ -1,11 +1,11 @@
 # MyRuns
-Android application to track exercise activity and publishes data to cloud server
+Android application to track exercise activity and publishes data to a cloud server
 
-Uses action tabs to display three separate fragments: Start, History, and Settings.
-  Start- allows user input of activities or automatic gps recording.
-  History- displays past workouts.
-  Settings- changes user preferences.
+Uses action tabs to display three separate view fragments: Start, History, and Settings.
+  -Start: allows user input of activities or automatic gps recording.
+  -History: displays past workouts.
+  -Settings: changes user preferences.
 
 Profile information is accessible from the Settings tab:
-Takes user input for profile information, and saves it to the sd card using SharedPreferences.
-Also allows user to take a profile picture using the camera.
+  -takes user input for profile information, and saves it to the sd card using SharedPreferences.
+  -also allows user to take a profile picture using the camera.
