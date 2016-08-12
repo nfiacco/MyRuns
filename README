@@ -11,3 +11,8 @@ Uses action tabs to display three separate view fragments: Start, History, and S
 Profile information is accessible from the Settings tab:
   -takes user input for profile information, and saves it to the sd card using SharedPreferences.
   -also allows user to take a profile picture using the camera.
+
+Map view is displayed on the Start tab:
+  -allows user to begin tracking their route
+  -gives information on distance travelled and average speed
+  -provides functionality to save exercise results to cloud
