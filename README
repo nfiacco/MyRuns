@@ -1,5 +1,6 @@
-# MyRuns
-# March 2015
+# Title: MyRuns
+# Author: Nick Fiacco
+# Date: Feb. 2015
 Android application to track exercise activity and publishes data to a cloud server
 
 Uses action tabs to display three separate view fragments: Start, History, and Settings.
